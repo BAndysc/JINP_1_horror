@@ -1,4 +1,11 @@
-template <typename T, char x>
+#ifndef MONSTER_H
+#define MONSTER_H
+
+
+
+#include "citizen.h"
+
+template <typename T>
 class Monster {
 	T h, aP;
 public:
@@ -16,27 +23,26 @@ public:
 	}
 };
 
-/*
-template <typename T, 'z'>
-class Zombie { };
+template <typename T>
+using Zombie = Monster<T>;
 
-template <typename T, 'z'>
-class Mummy { };
+template <typename T>
+using Mummy = Monster<T>;
 
-template <typename T, 'z'>
-class Vampire { };
-*/
+template <typename T>
+using Vampire = Monster<T>;
+
 template <typename M, typename U>
-void attack(M monster, U victim) {
+void attack(M &monster, U &victim) {
 	victim.takeDamage(monster.getAttackPower());
-	defend(monster, victim);
 }
 
 
-template <typename M, typename U>
-void defend(M monster, U victim) { }
-
-template <typename M>
-void defend(M monster, Sheriff<T> victim) {
-	moster.takeDamage(victim.getAttackPower());
+template <typename M, typename U, typename T>
+//Tutaj T trzeba jakoś z U wyciągnąć
+void attack(M &monster, Sheriff<T> &victim) {
+	victim.takeDamage(monster.getAttackPower());
+	monster.takeDamage(victim.getAttackPower());
 }
+
+#endif //MONSTER_H

@@ -1,6 +1,10 @@
 #include "citizen.h"
 #include "monster.h"
 //#include "smalltown.h"
+#include <iostream>
+#include <cassert>
+
+using namespace std;
 
 int main() {
    /*
@@ -13,15 +17,17 @@ int main() {
 
     smallTown.tick(1);
     smallTown.tick(22);
-	
+
     auto status = smallTown.getStatus();
     assert(get<0>(status) != "");
     assert(get<1>(status) == 60);
     assert(get<2>(status) == 3);
 	*/
-	
-	Mummy<float>(100.0f, 1.5f);
-    Sheriff<int>(100, 35, 20);
-	
+
+	Mummy<float> m = Mummy<float>(100.0f, 2.0f);
+    Sheriff<int> s = Sheriff<int>(100, 35, 20);
+	attack(m, s);
+
+    assert(m.getHealth() == 80 && s.getHealth() == 98);
     return 0;
 }
