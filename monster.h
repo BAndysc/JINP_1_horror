@@ -1,46 +1,57 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
-
-
+#include <iostream>
 #include "citizen.h"
 
-template <typename T>
+template <typename T, const char* NAME>
 class Monster {
-	T h, aP;
+
+	T health, attackPower;
+
 public:
-	Monster(T health, T attackPower):
-	h(health), aP(attackPower) {}
-	T getHealth() const { return h; }
-	T getAttackPower() const { return aP; }
+
+	Monster(T _health, T _attackPower): health(_health), attackPower(_attackPower) { }
+
+	typedef T valueType;
+
+	// to jakoś można lepiej chyba...
+	const char* getName() const { return NAME; }
+
+	T getHealth() const { return health; }
+	T getAttackPower() const { return attackPower; }
+
 	void takeDamage(T damage) {
-		if (h > damage) {
-			h -= damage;
-		}
-		else {
-			h -= h;
-		}
+		if (health > damage)
+			health -= damage;
+		else
+			health -= health;
 	}
+
 };
 
-template <typename T>
-using Zombie = Monster<T>;
+namespace {
+	char ZOMBIE_NAME[] = "Zombie";
+	char MUMMY_NAME[] = "Mummy";
+	char VAMPIRE_NAME[] = "Vampire";
+}
 
 template <typename T>
-using Mummy = Monster<T>;
+using Zombie = Monster<T, ZOMBIE_NAME>;
 
 template <typename T>
-using Vampire = Monster<T>;
+using Mummy = Monster<T, MUMMY_NAME>;
+
+template <typename T>
+using Vampire = Monster<T, VAMPIRE_NAME>;
 
 template <typename M, typename U>
-void attack(M &monster, U &victim) {
+void attack(M& monster, U& victim) {
 	victim.takeDamage(monster.getAttackPower());
 }
 
-
-template <typename M, typename U, typename T>
-//Tutaj T trzeba jakoś z U wyciągnąć
-void attack(M &monster, Sheriff<T> &victim) {
+template <typename M, typename T>
+void attack(M& monster, Sheriff<T>& victim) {
 	victim.takeDamage(monster.getAttackPower());
 	monster.takeDamage(victim.getAttackPower());
 }
