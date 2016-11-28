@@ -20,7 +20,6 @@ public:
             monster(_monster), time(TIME_START) {
         citizens = std::tuple<C...>(_citizens...);
         aliveCitizens = sizeof...(_citizens);
-        cout<<fibonacci<40>::getValue;
     }
 
     std::tuple<std::string, typename M::valueType, size_t> getStatus() {
