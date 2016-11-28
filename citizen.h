@@ -5,8 +5,12 @@
 #include <type_traits>
 
 
-struct YES { constexpr static bool value = true; };
-struct NO { constexpr static bool value = false; };
+struct YES {
+    constexpr static bool value = true;
+};
+struct NO {
+    constexpr static bool value = false;
+};
 
 template<typename T, T MIN_AGE, T MAX_AGE, typename CAN_SHOOT>
 class Citizen {
@@ -17,16 +21,17 @@ public:
 
     Citizen() { }
 
-
     template<typename U = CAN_SHOOT>
-    Citizen(T _health, T _age,  typename std::enable_if<!U::value>::type* = 0)
-            : health(_health), age(_age) {
+    Citizen(T _health, T _age,
+            typename std::enable_if<!U::value && std::is_arithmetic<T>::value>::type * = 0) :
+            health(_health), age(_age) {
         assert(age >= MIN_AGE && age <= MAX_AGE);
     }
 
     template<typename U = CAN_SHOOT>
-    Citizen(T _health, T _age, T _attackPower, typename std::enable_if<U::value>::type* = 0)
-            : health(_health), age(_age), attackPower(_attackPower) {
+    Citizen(T _health, T _age, T _attackPower,
+            typename std::enable_if<U::value && std::is_arithmetic<T>::value>::type * = 0) :
+            health(_health), age(_age), attackPower(_attackPower) {
         assert(age >= MIN_AGE && age <= MAX_AGE);
     }
 
@@ -34,9 +39,8 @@ public:
 
     T getAge() const { return age; }
 
-
     template<typename U = CAN_SHOOT>
-    T getAttackPower(typename std::enable_if<U::value>::type* = 0) const { return attackPower; }
+    T getAttackPower(typename std::enable_if<U::value>::type * = 0) const { return attackPower; }
 
     void takeDamage(T damage) {
         if (health > damage)
