@@ -7,14 +7,14 @@
 using namespace std;
 
 int main() {
-	auto smallTown = SmallTown<Mummy<float>, int, 1, 23, Sheriff<int>, Adult<int>, Teenager<long>>(
-			Mummy<float>(100.0f, 1.5f),
+	auto smallTown = SmallTown<Zombie<float>, int, 1, 23, Sheriff<int>, Adult<int>, Teenager<long>>(
+			Zombie<float>(100.0f, 1.5f),
 			Sheriff<int>(100, 35, 20),
 			Adult<int>(100, 21),
 			Teenager<long>(50, 14)
 	);
 
-	//smallTown.tick(1);
+	smallTown.tick(1);
 	//smallTown.tick(22);
 
 	/*auto status = smallTown.getStatus();
@@ -25,6 +25,8 @@ int main() {
 	Mummy<float> m(100.0f, 2.0f);
 	Sheriff<int> s(100, 35, 20);
 	Adult<int> a(100, 20);
+
+	//A b = 12;
 
 	attack(m, s);
 	attack(m, a);

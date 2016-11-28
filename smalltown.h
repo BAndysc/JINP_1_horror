@@ -5,31 +5,46 @@
 #include <tuple>
 #include <cassert>
 
+template<typename T>
+std::string GetMonsterName(T t) { return ""; }
+
+template<typename T>
+std::string GetMonsterName(Mummy<T> mummy)
+{
+    return "Mummy";
+}
+
 template<typename M, typename U, U TIME_START, U TIME_END, typename... C>
 class SmallTown {
-
     M monster;
     U time;
     std::tuple<C...> citizens;
     size_t aliveCitizens;
 
+   // std::unordered_set<U> Fibonacci;
+
 public:
 
     SmallTown(M const &_monster, C... _citizens,
               typename std::enable_if<std::is_arithmetic<U>::value>::type * = 0) :
-            monster(_monster), time(TIME_START) {
-        citizens = std::tuple<C...>(_citizens...);
+            monster(_monster), time(TIME_START), citizens(_citizens...) {
         aliveCitizens = sizeof...(_citizens);
     }
 
     std::tuple<std::string, typename M::valueType, size_t> getStatus() {
-        return std::make_tuple(monster.getName(), monster.getHealth(), 0);
+        return std::make_tuple(GetMonsterName(monster), monster.getHealth(), 0);
     }
 
     void tick(U timeStep) {
-        // gdy trzeba zaatakować, należy użyć:
-        // attackAll();
-        // computeResult();
+        computeResult();
+
+
+
+        // if (time is fibbonacci) setFibonacci.find(time) != setFibonacci.end()
+        attackAll();
+
+        time += timeStep;
+//        std::cout << GetMonsterName(monster) << "\n";
     }
 
 private:

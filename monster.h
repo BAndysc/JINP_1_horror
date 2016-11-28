@@ -32,11 +32,9 @@ public:
 
 };
 
-namespace {
-    char ZOMBIE_NAME[] = "Zombie";
-    char MUMMY_NAME[] = "Mummy";
-    char VAMPIRE_NAME[] = "Vampire";
-}
+char ZOMBIE_NAME[] = "Zombie";
+char MUMMY_NAME[] = "Mummy";
+char VAMPIRE_NAME[] = "Vampire";
 
 template<typename T>
 using Zombie = Monster<T, ZOMBIE_NAME>;

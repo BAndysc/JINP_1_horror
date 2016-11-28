@@ -5,32 +5,25 @@
 #include <type_traits>
 
 
-struct YES {
-    constexpr static bool value = true;
-};
-struct NO {
-    constexpr static bool value = false;
-};
-
-template<typename T, T MIN_AGE, T MAX_AGE, typename CAN_SHOOT>
+template<typename T, T MIN_AGE, T MAX_AGE, bool CAN_SHOOT>
 class Citizen {
+
+    static_assert(std::is_arithmetic<T>::value, "T must be arithmetic!");
 
     T health, age, attackPower;
 
 public:
 
-    Citizen() { }
-
-    template<typename U = CAN_SHOOT>
+    template<bool U = CAN_SHOOT>
     Citizen(T _health, T _age,
-            typename std::enable_if<!U::value && std::is_arithmetic<T>::value>::type * = 0) :
+            typename std::enable_if<!U>::type * = 0) :
             health(_health), age(_age) {
         assert(age >= MIN_AGE && age <= MAX_AGE);
     }
 
-    template<typename U = CAN_SHOOT>
+    template<bool U = CAN_SHOOT>
     Citizen(T _health, T _age, T _attackPower,
-            typename std::enable_if<U::value && std::is_arithmetic<T>::value>::type * = 0) :
+            typename std::enable_if<U>::type * = 0) :
             health(_health), age(_age), attackPower(_attackPower) {
         assert(age >= MIN_AGE && age <= MAX_AGE);
     }
@@ -39,8 +32,8 @@ public:
 
     T getAge() const { return age; }
 
-    template<typename U = CAN_SHOOT>
-    T getAttackPower(typename std::enable_if<U::value>::type * = 0) const { return attackPower; }
+    template<bool U = CAN_SHOOT>
+    T getAttackPower(typename std::enable_if<U>::type * = 0) const { return attackPower; }
 
     void takeDamage(T damage) {
         if (health > damage)
@@ -51,13 +44,13 @@ public:
 };
 
 template<typename T>
-using Teenager = Citizen<T, 11, 17, NO>;
+using Teenager = Citizen<T, 11, 17, false>;
 
 template<typename T>
-using Adult = Citizen<T, 18, 100, NO>;
+using Adult = Citizen<T, 18, 100, false>;
 
 template<typename T>
-using Sheriff = Citizen<T, 18, 100, YES>;
+using Sheriff = Citizen<T, 18, 100, true>;
 
 
 #endif //CITIZEN_H
