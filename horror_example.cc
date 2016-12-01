@@ -4,6 +4,9 @@
 #include <iostream>
 #include <cassert>
 
+constexpr auto abl = make_array<how_many_fib(13)>(nTh);
+
+
 using namespace std;
 
 int main() {
@@ -14,7 +17,10 @@ int main() {
 			Teenager<long>(50, 14)
 	);
 
-	smallTown.tick(1);
+	for(int x : abl)
+		std::cout << x << " ";
+
+	smallTown.tick(8);
 	//smallTown.tick(22);
 
 	/*auto status = smallTown.getStatus();
