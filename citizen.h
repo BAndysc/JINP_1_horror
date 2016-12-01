@@ -5,9 +5,9 @@
 #include <type_traits>
 
 
-template<typename T, T MIN_AGE, T MAX_AGE, bool CAN_SHOOT>
-class Citizen {
-
+template<typename T, int MIN_AGE, int MAX_AGE, bool CAN_SHOOT>
+class Citizen
+{
     static_assert(std::is_arithmetic<T>::value, "T must be arithmetic!");
 
     T health, age, attackPower;
@@ -15,13 +15,15 @@ class Citizen {
 public:
 
     template<bool U = CAN_SHOOT, typename = typename std::enable_if<!U>::type>
-    Citizen(T _health, T _age) : health(_health), age(_age) {
+    Citizen(T _health, T _age) : health(_health), age(_age)
+    {
         assert(age >= MIN_AGE && age <= MAX_AGE);
     }
 
     template<bool U = CAN_SHOOT, typename = typename std::enable_if<U>::type>
     Citizen(T _health, T _age, T _attackPower) :
-            health(_health), age(_age), attackPower(_attackPower) {
+            health(_health), age(_age), attackPower(_attackPower)
+    {
         assert(age >= MIN_AGE && age <= MAX_AGE);
     }
 
@@ -32,7 +34,8 @@ public:
     template<bool U = CAN_SHOOT, typename = typename std::enable_if<U>::type>
     T getAttackPower() const { return attackPower; }
 
-    void takeDamage(T damage) {
+    void takeDamage(T damage)
+    {
         if (health > damage)
             health -= damage;
         else

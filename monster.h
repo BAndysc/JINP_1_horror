@@ -1,28 +1,29 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
-#include <iostream>
+//#include <iostream>
 #include "citizen.h"
 
 template<typename T, const char *NAME>
-class Monster {
+class Monster
+{
+	static_assert(std::is_arithmetic<T>::value, "T must be arithmetic!");
 
     T health, attackPower;
 
 public:
-    Monster(T _health, T _attackPower,
-            typename std::enable_if<std::is_arithmetic<T>::value>::type * = 0) :
-            health(_health), attackPower(_attackPower) { }
+    Monster(T _health, T _attackPower) : health(_health), attackPower(_attackPower) { }
 
     typedef T valueType;
 
-    const char *getName() const { return NAME; }
+    const char* getName() const { return NAME; }
 
     T getHealth() const { return health; }
 
     T getAttackPower() const { return attackPower; }
 
-    void takeDamage(T damage) {
+    void takeDamage(T damage)
+    {
         if (health > damage)
             health -= damage;
         else
@@ -45,12 +46,14 @@ template<typename T>
 using Vampire = Monster<T, VAMPIRE_NAME>;
 
 template<typename M, typename U>
-void attack(M &monster, U &victim) {
+void attack(M& monster, U& victim)
+{
     victim.takeDamage(monster.getAttackPower());
 }
 
 template<typename M, typename T>
-void attack(M &monster, Sheriff<T> &victim) {
+void attack(M& monster, Sheriff<T>& victim)
+{
     victim.takeDamage(monster.getAttackPower());
     monster.takeDamage(victim.getAttackPower());
 }
