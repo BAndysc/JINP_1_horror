@@ -16,7 +16,6 @@ public:
 
     typedef T valueType;
 
-    // to jakoś można lepiej chyba...
     const char *getName() const { return NAME; }
 
     T getHealth() const { return health; }

@@ -14,16 +14,13 @@ class Citizen {
 
 public:
 
-    template<bool U = CAN_SHOOT>
-    Citizen(T _health, T _age,
-            typename std::enable_if<!U>::type * = 0) :
-            health(_health), age(_age) {
+    template<bool U = CAN_SHOOT, typename = typename std::enable_if<!U>::type>
+    Citizen(T _health, T _age) : health(_health), age(_age) {
         assert(age >= MIN_AGE && age <= MAX_AGE);
     }
 
-    template<bool U = CAN_SHOOT>
-    Citizen(T _health, T _age, T _attackPower,
-            typename std::enable_if<U>::type * = 0) :
+    template<bool U = CAN_SHOOT, typename = typename std::enable_if<U>::type>
+    Citizen(T _health, T _age, T _attackPower) :
             health(_health), age(_age), attackPower(_attackPower) {
         assert(age >= MIN_AGE && age <= MAX_AGE);
     }
@@ -32,8 +29,8 @@ public:
 
     T getAge() const { return age; }
 
-    template<bool U = CAN_SHOOT>
-    T getAttackPower(typename std::enable_if<U>::type * = 0) const { return attackPower; }
+    template<bool U = CAN_SHOOT, typename = typename std::enable_if<U>::type>
+    T getAttackPower() const { return attackPower; }
 
     void takeDamage(T damage) {
         if (health > damage)

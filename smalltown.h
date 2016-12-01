@@ -4,15 +4,55 @@
 #include <iostream>
 #include <tuple>
 #include <cassert>
+#include <vector>
 
-template<typename T>
-std::string GetMonsterName(T t) { return ""; }
-
-template<typename T>
-std::string GetMonsterName(Mummy<T> mummy)
+constexpr int how_many_fib(int max) 
 {
-    return "Mummy";
+    int a = 1;
+    int b = 0;
+    int count = 0;
+
+    while (a <= max)
+    {
+        int temp = a;
+        a = a+b;
+        b = temp;
+        ++count;
+    }
+    return count;
 }
+
+constexpr int nTh(int x)
+{
+    int a = 1;
+    int b = 0;
+    int count = 0;
+
+    while (count < x)
+    {
+        int temp = a;
+        a = a+b;
+        b = temp;
+        ++count;
+    }
+    return a;
+}
+
+template<class Function, std::size_t... Indices>
+constexpr auto make_array_helper(Function f, std::index_sequence<Indices...>) 
+-> std::array<typename std::result_of<Function(std::size_t)>::type, sizeof...(Indices)> 
+{
+    return {{ f(Indices)... }};
+}
+
+template<int N, class Function>
+constexpr auto make_array(Function f)
+-> std::array<typename std::result_of<Function(std::size_t)>::type, N> 
+{
+    return make_array_helper(f, std::make_index_sequence<N>{});    
+}
+
+
 
 template<typename M, typename U, U TIME_START, U TIME_END, typename... C>
 class SmallTown {
@@ -32,7 +72,7 @@ public:
     }
 
     std::tuple<std::string, typename M::valueType, size_t> getStatus() {
-        return std::make_tuple(GetMonsterName(monster), monster.getHealth(), 0);
+        return std::make_tuple(monster.getName(), monster.getHealth(), aliveCitizens);
     }
 
     void tick(U timeStep) {
