@@ -1,13 +1,12 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
-//#include <iostream>
 #include "citizen.h"
 
 template<typename T, const char *NAME>
 class Monster
 {
-	static_assert(std::is_arithmetic<T>::value, "T must be arithmetic!");
+    static_assert(std::is_arithmetic<T>::value, "T must be arithmetic!");
 
     T health, attackPower;
 
